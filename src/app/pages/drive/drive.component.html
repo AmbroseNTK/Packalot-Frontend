@@ -1,0 +1,79 @@
+<mat-drawer-container class="example-container">
+    <mat-drawer mode="side" opened style="width:20%;background-color: azure;" class="mat-elevation-z12">
+        <mat-list>
+            <mat-list-item>
+                <div class="mat-list-title">
+                    <img *ngIf="userInfo.photoUrl==null" style="border-radius: 50%; width: 50px;"
+                        src="https://image.flaticon.com/icons/svg/149/149071.svg">
+                    <img *ngIf="userInfo.photoUrl!=null" style="border-radius: 50%; width: 50px;"
+                        [src]="userInfo.photoUrl">
+                </div>
+            </mat-list-item>
+            <mat-list-item>
+                <div class="mat-list-title">
+                    <h3>{{userInfo.email}}</h3>
+                </div>
+            </mat-list-item>
+            <mat-list-item>
+                <div class="mat-list-title">
+                    <button mat-button style="width: 100%;">
+                        <h3>
+                            {{userInfo.displayName}}
+                        </h3>
+                    </button>
+                </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <h3>Storage</h3>
+            </mat-list-item>
+            <mat-list-item>
+                <mat-progress-bar mode="determinate" [value]="getPercentage()"></mat-progress-bar>
+            </mat-list-item>
+            <mat-list-item>
+                <h4>
+                    {{getSize(userInfo.used)}}GB / {{getSize(userInfo.packSize)}}GB
+                    ({{getPercentage()}}%)
+                </h4>
+
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <button mat-button style="width: 100%;">
+                    <img src="https://image.flaticon.com/icons/svg/1383/1383399.svg" width="30" />
+                    Upload file</button>
+            </mat-list-item>
+
+            <mat-list-item>
+                <button mat-button style="width: 100%;">
+                    <img src="https://image.flaticon.com/icons/svg/1802/1802589.svg" width="30" />
+                    Create a folder</button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+                <h3>Tasks</h3>
+            </mat-list-item>
+            Nothing to do
+            <mat-divider></mat-divider>
+        </mat-list>
+    </mat-drawer>
+    <mat-drawer-content style="background: #fff;">
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <app-breadcrums [directory]="this.currentDir" (onNavigate)="onBreadcrumsNavigate($event,$event)">
+                </app-breadcrums>
+                <span class="example-spacer"></span>
+                <button mat-button>
+                    <img src="https://image.flaticon.com/icons/svg/747/747327.svg" width="30px">
+                </button>
+
+                <button mat-button>
+                    <img src="https://image.flaticon.com/icons/svg/25/25655.svg" width="30px">
+                </button>
+            </mat-toolbar-row>
+
+        </mat-toolbar>
+
+        <app-grid [files]="files" (onOpenFolder)="onOpenFolder($event)"></app-grid>
+    </mat-drawer-content>
+</mat-drawer-container>

@@ -1,0 +1,9 @@
+<div id="directory-tree">
+    <ul>
+        <!--
+        <li class="active"><a href="#">Breadcrumbs</a></li>
+        -->
+        <li *ngFor="let i of this.directory.reverse()"><a (click)="goTo(i)">{{i}}</a></li>
+        <li><a (click)="goTo('')">root</a></li>
+    </ul>
+</div>

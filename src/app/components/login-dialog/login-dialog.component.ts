@@ -1,0 +1,17 @@
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
+@Component({
+  selector: 'app-login-dialog',
+  templateUrl: './login-dialog.component.html',
+  styleUrls: ['./login-dialog.component.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom
+})
+export class LoginDialogComponent implements OnInit {
+
+  constructor(public dialogRef: MatDialogRef<LoginDialogComponent>) { }
+
+  ngOnInit() {
+  }
+
+}
