@@ -41,11 +41,13 @@
             <mat-list-item>
                 <button mat-button style="width: 100%;">
                     <img src="https://image.flaticon.com/icons/svg/1383/1383399.svg" width="30" />
+                    <input type="file" style="opacity: 0;position: absolute;"
+                        (change)="onOpenFile($event.target.files)">
                     Upload file</button>
             </mat-list-item>
 
             <mat-list-item>
-                <button mat-button style="width: 100%;">
+                <button mat-button style=" width: 100%;" (click)="createFolder()">
                     <img src="https://image.flaticon.com/icons/svg/1802/1802589.svg" width="30" />
                     Create a folder</button>
             </mat-list-item>

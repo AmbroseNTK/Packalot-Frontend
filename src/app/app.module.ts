@@ -20,13 +20,15 @@ import { SimpleComponent } from './message-box/simple/simple.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
+import { NewFolderDialogComponent } from './components/new-folder-dialog/new-folder-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     SimpleComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    NewFolderDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +49,6 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SimpleComponent, LoginDialogComponent]
+  entryComponents: [SimpleComponent, LoginDialogComponent, NewFolderDialogComponent]
 })
 export class AppModule { }

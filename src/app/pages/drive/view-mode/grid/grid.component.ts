@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger, MatMenu, MatMenuPanel } from '@angular/material/menu';
 
 @Component({
   selector: 'app-grid',
@@ -20,18 +20,31 @@ export class GridComponent implements OnInit {
   ngOnInit() {
   }
 
-  @ViewChild("contextMenuForFolder", { static: false })
+  @ViewChild("menuFolderTrigger", { static: false })
   contextMenuForFolder: MatMenuTrigger;
 
-  contextMenuPosition = { x: '0px', y: '0px' };
+  @ViewChild("menuFileTrigger", { static: false })
+  contextMenuForFile: MatMenuTrigger;
 
   onContextMenuForFolder(event: MouseEvent, folder) {
     event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    console.log(this.contextMenuForFolder);
     this.contextMenuForFolder.menuData = { folder: folder };
     this.contextMenuForFolder.openMenu();
+  }
+
+  onContextMenuForFile(event: MouseEvent, file) {
+    event.preventDefault();
+    this.contextMenuForFile.menuData = { file: file };
+    this.contextMenuForFile.openMenu();
+  }
+
+  onClickFolder(folder) {
+    this.onOpenFolder.emit(folder);
+    console.log(folder);
+  }
+
+  onClickFile(file) {
+    this.contextMenuForFile.closeMenu();
   }
 
   getIcon(fileName: string) {

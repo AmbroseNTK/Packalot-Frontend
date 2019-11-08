@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { DriveService } from '../../services/drive.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UploaderService } from 'src/app/services/uploader.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NewFolderDialogComponent } from 'src/app/components/new-folder-dialog/new-folder-dialog.component';
 
 @Component({
   selector: 'app-drive',
@@ -11,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DriveComponent implements OnInit {
 
-  constructor(public auth: AuthService, public afAuth: AngularFireAuth, public drive: DriveService) { }
+  constructor(public auth: AuthService, public afAuth: AngularFireAuth, public drive: DriveService, public uploader: UploaderService, public dialog: MatDialog) { }
 
   files = { files: [], folders: [] };
   currentDir = [];
@@ -66,6 +69,17 @@ export class DriveComponent implements OnInit {
     this.files = { files: result['files'], folders: result['folders'] };
   }
 
+  getDir(dirArray) {
+    let dir = "";
+    for (let i = 0; i < dirArray.length; i++) {
+      dir += "/" + dirArray[i];
+    }
+    if (dirArray.length == 0) {
+      dir = "/";
+    }
+    return dir;
+  }
+
   async onOpenFolder(folder) {
     this.currentDir.push(folder);
     let dir = "";
@@ -77,4 +91,28 @@ export class DriveComponent implements OnInit {
     }
     await this.onBreadcrumsNavigate({ directory: this.currentDir, dir: dir });
   }
+
+  async onOpenFile(files) {
+    this.uploader.errorHandler = () => { };
+    this.uploader.onProgress = (progress) => { console.log(progress) };
+    let token = await this.afAuth.auth.currentUser.getIdToken();
+    let result = this.uploader.upload(this.userInfo.uid, token, this.getDir(this.currentDir) + "/", files[0]).subscribe(async (status) => {
+      let fileResult = await this.drive.browse(this.userInfo.uid, token, this.getDir(this.currentDir) + "/");
+      this.files = { files: fileResult['files'], folders: fileResult['folders'] };
+      console.log(status);
+    });
+  }
+
+  createFolder() {
+    let dialogRef = this.dialog.open(NewFolderDialogComponent);
+    dialogRef.afterClosed().subscribe(async (data) => {
+      if (data != undefined) {
+        let token = await this.afAuth.auth.currentUser.getIdToken();
+        let result = await this.drive.createFolder(this.userInfo.uid, token, this.getDir(this.currentDir) + "/", data);
+        let fileResult = await this.drive.browse(this.userInfo.uid, token, this.getDir(this.currentDir) + "/");
+        this.files = { files: fileResult['files'], folders: fileResult['folders'] };
+      }
+    })
+  }
+
 }
