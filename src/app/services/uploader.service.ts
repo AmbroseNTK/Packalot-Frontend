@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { map, tap, last, catchError } from 'rxjs/operators';
-import { ObservableInput } from 'rxjs';
+import { ObservableInput, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,8 @@ export class UploaderService {
     return this.http.request(req).pipe(
       map(event => this.getEventMessage(event, file)),
       tap(message => this.onProgress(message)),
-      last() // return last (completed) message to caller
+      last(), // return last (completed) message to caller
+      catchError((err) => of(this.errorHandler(err)))
     );
   }
 
@@ -45,7 +46,6 @@ export class UploaderService {
         return { isCompleted: false, message: percentDone };
 
       case HttpEventType.Response:
-        console.log(event.body);
         return { isCompleted: true, message: event.body };
 
       default:

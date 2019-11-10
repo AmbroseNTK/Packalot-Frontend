@@ -103,7 +103,10 @@ export class DriveComponent implements OnInit {
       }
     };
 
-    this.uploader.errorHandler = () => { };
+    this.uploader.errorHandler = (err) => {
+      dialogData.status["isCompleted"] = true;
+      dialogData.status["message"] = "No more space";
+    };
     this.uploader.onProgress = (progress) => { dialogData.status = progress };
 
     const dialogRef = this.dialog.open(UploadDialogComponent, {
@@ -117,8 +120,6 @@ export class DriveComponent implements OnInit {
       this.files = { files: fileResult['files'], folders: fileResult['folders'] };
       this.reloadUsedSpace();
     });
-
-
 
   }
 

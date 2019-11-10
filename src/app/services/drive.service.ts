@@ -58,14 +58,18 @@ export class DriveService {
     }
   }
 
-  public async deleteDir(uid, token, location) {
+  public async deleteDir(uid, token, location, forFolder = false) {
     console.log(location);
     try {
-      let result = await this.client.post(this.api.root + "/file/delete", {
+      let body = {
         uid: uid,
         token: token,
         location: location
-      }).toPromise();
+      };
+      if (forFolder) {
+        body["forFolder"] = true;
+      }
+      let result = await this.client.post(this.api.root + "/file/delete", body).toPromise();
       return { ...result };
     }
     catch (e) {

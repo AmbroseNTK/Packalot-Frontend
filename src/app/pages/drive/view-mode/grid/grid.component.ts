@@ -35,12 +35,23 @@ export class GridComponent implements OnInit {
   @ViewChild("menuFileTrigger", { static: false })
   contextMenuForFile: MatMenuTrigger;
 
-  onContextMenuForFolder(event: MouseEvent, folder) {
+  async onContextMenuForFolder(event: MouseEvent, folder) {
     event.preventDefault();
     //this.contextMenuForFolder.menuData = { folder: folder };
     //this.contextMenuForFolder.openMenu();
-    let sheetRef = this._bottomSheet.open(FileActionDialogComponent, {
-      data: { fileName: folder, forFolder: true }
+    let token = await this.afAuth.auth.currentUser.getIdToken();
+
+    this._bottomSheet.open(FileActionDialogComponent, {
+      data: {
+        fileName: folder,
+        forFolder: true,
+        uid: this.afAuth.auth.currentUser.uid,
+        token: token,
+        location: (this.directory == "/" ? "/" : this.directory + "/") + folder
+      }
+    }).afterDismissed().subscribe(() => {
+
+      this.onFileActionClose.emit();
     });
   }
 
@@ -62,7 +73,7 @@ export class GridComponent implements OnInit {
     }).afterDismissed().subscribe(() => {
 
       this.onFileActionClose.emit();
-    });;
+    });
   }
 
   onClickFolder(folder) {
