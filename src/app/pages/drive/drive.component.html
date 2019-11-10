@@ -55,7 +55,6 @@
             <mat-list-item>
                 <h3>Tasks</h3>
             </mat-list-item>
-            Nothing to do
             <mat-divider></mat-divider>
         </mat-list>
     </mat-drawer>
@@ -76,6 +75,8 @@
 
         </mat-toolbar>
 
-        <app-grid [files]="files" (onOpenFolder)="onOpenFolder($event)"></app-grid>
+        <app-grid (onFileActionClose)="onFileActionClose()" [directory]="getDir(this.currentDir)" [files]="files"
+            (onOpenFolder)="onOpenFolder($event)">
+        </app-grid>
     </mat-drawer-content>
 </mat-drawer-container>

@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatMenuTrigger, MatMenu, MatMenuPanel } from '@angular/material/menu';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { FileActionDialogComponent } from 'src/app/components/file-action-dialog/file-action-dialog.component';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-grid',
@@ -12,10 +15,16 @@ export class GridComponent implements OnInit {
   @Input()
   files = { files: [], folders: [] };
 
+  @Input()
+  directory = "";
+
   @Output()
   onOpenFolder: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  @Output()
+  onFileActionClose: EventEmitter<void> = new EventEmitter();
+
+  constructor(private _bottomSheet: MatBottomSheet, public afAuth: AngularFireAuth) { }
 
   ngOnInit() {
   }
@@ -28,14 +37,32 @@ export class GridComponent implements OnInit {
 
   onContextMenuForFolder(event: MouseEvent, folder) {
     event.preventDefault();
-    this.contextMenuForFolder.menuData = { folder: folder };
-    this.contextMenuForFolder.openMenu();
+    //this.contextMenuForFolder.menuData = { folder: folder };
+    //this.contextMenuForFolder.openMenu();
+    let sheetRef = this._bottomSheet.open(FileActionDialogComponent, {
+      data: { fileName: folder, forFolder: true }
+    });
   }
 
-  onContextMenuForFile(event: MouseEvent, file) {
+  async onContextMenuForFile(event: MouseEvent, file) {
     event.preventDefault();
-    this.contextMenuForFile.menuData = { file: file };
-    this.contextMenuForFile.openMenu();
+    //this.contextMenuForFile.menuData = { file: file };
+    //this.contextMenuForFile.openMenu();
+
+    //let usr = await this.afAuth
+    let token = await this.afAuth.auth.currentUser.getIdToken();
+
+    this._bottomSheet.open(FileActionDialogComponent, {
+      data: {
+        fileName: file,
+        uid: this.afAuth.auth.currentUser.uid,
+        token: token,
+        location: (this.directory == "/" ? "/" : this.directory + "/") + file
+      }
+    }).afterDismissed().subscribe(() => {
+
+      this.onFileActionClose.emit();
+    });;
   }
 
   onClickFolder(folder) {
@@ -45,6 +72,7 @@ export class GridComponent implements OnInit {
 
   onClickFile(file) {
     this.contextMenuForFile.closeMenu();
+
   }
 
   getIcon(fileName: string) {

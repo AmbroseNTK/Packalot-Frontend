@@ -21,6 +21,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { NewFolderDialogComponent } from './components/new-folder-dialog/new-folder-dialog.component';
+import { UploadDialogComponent } from './components/upload-dialog/upload-dialog.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FileActionDialogComponent } from './components/file-action-dialog/file-action-dialog.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,9 @@ import { NewFolderDialogComponent } from './components/new-folder-dialog/new-fol
     NavBarComponent,
     SimpleComponent,
     LoginDialogComponent,
-    NewFolderDialogComponent
+    NewFolderDialogComponent,
+    UploadDialogComponent,
+    FileActionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -45,10 +52,13 @@ import { NewFolderDialogComponent } from './components/new-folder-dialog/new-fol
     MatDialogModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressBarModule,
+    MatBottomSheetModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SimpleComponent, LoginDialogComponent, NewFolderDialogComponent]
+  entryComponents: [SimpleComponent, LoginDialogComponent, NewFolderDialogComponent, UploadDialogComponent, FileActionDialogComponent]
 })
 export class AppModule { }

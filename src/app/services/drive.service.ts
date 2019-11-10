@@ -9,6 +9,25 @@ export class DriveService {
 
   constructor(private api: ApiService, private client: HttpClient) { }
 
+
+  actions = [
+    {
+      title: "Downloading",
+      progress: 50,
+      showProgress: true,
+      action: () => { },
+      actionName: "Done",
+      hasAction: true
+    },
+    {
+      title: "Downloading",
+      progress: 20,
+      showProgress: true,
+      action: () => { },
+      actionName: "Done"
+    }
+  ];
+
   public async browse(uid, token, directory: string) {
     try {
       let result = await this.client.post(this.api.root + "/user/browse", {
@@ -31,6 +50,21 @@ export class DriveService {
         token: token,
         location: location,
         folderName: folderName
+      }).toPromise();
+      return { ...result };
+    }
+    catch (e) {
+      return { status: "failed", message: e };
+    }
+  }
+
+  public async deleteDir(uid, token, location) {
+    console.log(location);
+    try {
+      let result = await this.client.post(this.api.root + "/file/delete", {
+        uid: uid,
+        token: token,
+        location: location
       }).toPromise();
       return { ...result };
     }

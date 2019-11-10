@@ -1,22 +1,18 @@
 <h1 mat-dialog-title>Login</h1>
 <div mat-dialog-content>
-
-    <p>Email</p>
-    <mat-form-field>
-        <input matInput required type="email" #email>
+    <mat-form-field style="width:100%">
+        <input matInput required type="email" placeholder="Email" #email>
     </mat-form-field>
-
-    <p>Password</p>
-    <mat-form-field>
-        <input matInput required type="password" #password>
+    <br>
+    <mat-form-field style="width:100%">
+        <input matInput required type="password" placeholder="Password" #password>
     </mat-form-field>
-
-
 </div>
 <div mat-dialog-actions>
-    <button mat-button style="margin:10px;width: 100%;">Login</button>
-    <button mat-button style="margin:10px;width: 100%;">I forgot my password</button>
-    <button mat-button style="margin:10px;width: 100%;">
-        <img src="https://image.flaticon.com/icons/svg/281/281764.svg" style="width: 20px;" />
+    <button mat-button style="width:100%;">Login</button>
+    <button mat-button style="width:100%;color:navy">I forgot my password</button>
+    <br>
+    <button mat-button style="width: 100%;">
+        <img src="https://image.flaticon.com/icons/svg/281/281764.svg" style="width: 30px;" />
         Login with Google</button>
 </div>

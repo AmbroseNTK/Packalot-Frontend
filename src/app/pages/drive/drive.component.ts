@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UploaderService } from 'src/app/services/uploader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewFolderDialogComponent } from 'src/app/components/new-folder-dialog/new-folder-dialog.component';
+import { UploadDialogComponent } from 'src/app/components/upload-dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-drive',
@@ -93,14 +94,32 @@ export class DriveComponent implements OnInit {
   }
 
   async onOpenFile(files) {
+    let dialogData = {
+      progress: 0,
+      fileName: files[0].name,
+      status: {
+        isError: false,
+        message: ""
+      }
+    };
+
     this.uploader.errorHandler = () => { };
-    this.uploader.onProgress = (progress) => { console.log(progress) };
+    this.uploader.onProgress = (progress) => { dialogData.status = progress };
+
+    const dialogRef = this.dialog.open(UploadDialogComponent, {
+      width: '300px',
+      data: dialogData
+    });
+
     let token = await this.afAuth.auth.currentUser.getIdToken();
     let result = this.uploader.upload(this.userInfo.uid, token, this.getDir(this.currentDir) + "/", files[0]).subscribe(async (status) => {
       let fileResult = await this.drive.browse(this.userInfo.uid, token, this.getDir(this.currentDir) + "/");
       this.files = { files: fileResult['files'], folders: fileResult['folders'] };
-      console.log(status);
+      this.reloadUsedSpace();
     });
+
+
+
   }
 
   createFolder() {
@@ -113,6 +132,21 @@ export class DriveComponent implements OnInit {
         this.files = { files: fileResult['files'], folders: fileResult['folders'] };
       }
     })
+  }
+
+  async reloadUsedSpace() {
+    this.auth.getUserRecord(await this.afAuth.auth.currentUser.getIdToken(), this.userInfo.uid).subscribe((record) => {
+      this.userInfo = {
+        ...this.userInfo,
+        ...record["payload"]
+      };
+
+    });
+  }
+
+  onFileActionClose() {
+    this.onBreadcrumsNavigate({ directory: this.currentDir, dir: this.getDir(this.currentDir) });
+    this.reloadUsedSpace();
   }
 
 }

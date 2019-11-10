@@ -13,7 +13,7 @@ export class UploaderService {
   constructor(private api: ApiService, private http: HttpClient) { }
 
   onProgress: (progress) => void;
-  errorHandler: () => void;
+  errorHandler: (err) => void;
 
   upload(uid, token, location, file) {
     let form = new FormData();
@@ -29,22 +29,24 @@ export class UploaderService {
     return this.http.request(req).pipe(
       map(event => this.getEventMessage(event, file)),
       tap(message => this.onProgress(message)),
-      last(), // return last (completed) message to caller
-      catchError(() => { this.errorHandler(); return null; }));
+      last() // return last (completed) message to caller
+    );
   }
 
   private getEventMessage(event: HttpEvent<any>, file: File) {
+    console.log(event);
     switch (event.type) {
       case HttpEventType.Sent:
-        return `Uploading file "${file.name}" of size ${file.size}.`;
+        return { isCompleted: true, message: `Uploading file "${file.name}" of size ${file.size}.` };
 
       case HttpEventType.UploadProgress:
         // Compute and show the % done:
         const percentDone = Math.round(100 * event.loaded / event.total);
-        return percentDone;
+        return { isCompleted: false, message: percentDone };
 
       case HttpEventType.Response:
-        return `File "${file.name}" was completely uploaded!`;
+        console.log(event.body);
+        return { isCompleted: true, message: event.body };
 
       default:
         return `File "${file.name}" surprising upload event: ${event.type}.`;
