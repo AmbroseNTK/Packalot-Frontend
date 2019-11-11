@@ -55,6 +55,17 @@
             <mat-list-item>
                 <h3>Tasks</h3>
             </mat-list-item>
+            <mat-list-item *ngFor="let action of this.drive.clipboard">
+                <p *ngIf="action.method=='copy'">Copy {{action.directory}}</p>
+                <p *ngIf="action.method=='move'">Move {{action.directory}}</p>
+
+                <button mat-button (click)="onPaste(action)">
+                    Paste
+                </button>
+                <button mat-button>
+                    Clear
+                </button>
+            </mat-list-item>
             <mat-divider></mat-divider>
         </mat-list>
     </mat-drawer>

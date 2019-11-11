@@ -22,11 +22,13 @@ export class FileActionDialogComponent implements OnInit {
       }
     }, {
       icon: "https://image.flaticon.com/icons/svg/124/124818.svg", text: "Move", handler: () => {
-
+        this.drive.addToClipboard(this.data.location, false);
+        this._bottomSheetRef.dismiss();
       }
     }, {
       icon: "https://image.flaticon.com/icons/svg/2270/2270591.svg", text: "Copy", handler: () => {
-
+        this.drive.addToClipboard(this.data.location, true);
+        this._bottomSheetRef.dismiss();
       }
     },
     {
@@ -49,11 +51,13 @@ export class FileActionDialogComponent implements OnInit {
       },
       {
         icon: "https://image.flaticon.com/icons/svg/1420/1420322.svg", text: "Move", handler: () => {
-
+          this.drive.addToClipboard(this.data.location, false);
+          this._bottomSheetRef.dismiss();
         }
       }, {
         icon: "https://image.flaticon.com/icons/svg/1087/1087547.svg", text: "Clone", handler: () => {
-
+          this.drive.addToClipboard(this.data.location, true);
+          this._bottomSheetRef.dismiss();
         }
       }, {
         icon: "https://image.flaticon.com/icons/svg/1632/1632602.svg", text: "Delete", handler: async () => {

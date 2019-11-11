@@ -9,24 +9,7 @@ export class DriveService {
 
   constructor(private api: ApiService, private client: HttpClient) { }
 
-
-  actions = [
-    {
-      title: "Downloading",
-      progress: 50,
-      showProgress: true,
-      action: () => { },
-      actionName: "Done",
-      hasAction: true
-    },
-    {
-      title: "Downloading",
-      progress: 20,
-      showProgress: true,
-      action: () => { },
-      actionName: "Done"
-    }
-  ];
+  clipboard = []
 
   public async browse(uid, token, directory: string) {
     try {
@@ -74,6 +57,32 @@ export class DriveService {
     }
     catch (e) {
       return { status: "failed", message: e };
+    }
+  }
+
+  public async copyOrMove(uid, token, source, destination, method) {
+    try {
+      let result = await this.client.post(this.api.root + "/file/copy-or-move", {
+        uid: uid,
+        token: token,
+        source: source,
+        destination: destination,
+        method: method
+      }).toPromise();
+      return { ...result };
+    }
+    catch (e) {
+      return { status: "failed", message: e };
+    }
+  }
+
+  public addToClipboard(directory, isCopy = true) {
+    let index = this.clipboard.findIndex((file) => file.directory == directory);
+    if (index != -1) {
+      this.clipboard[index].method = isCopy ? "copy" : "move";
+    }
+    else {
+      this.clipboard.push({ directory: directory, method: isCopy ? "copy" : "move" });
     }
   }
 

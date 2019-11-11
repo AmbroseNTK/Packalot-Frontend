@@ -150,4 +150,12 @@ export class DriveComponent implements OnInit {
     this.reloadUsedSpace();
   }
 
+  async onPaste(action) {
+    console.log(action);
+    let result = await this.drive.copyOrMove(this.afAuth.auth.currentUser.uid, await this.afAuth.auth.currentUser.getIdToken(),
+      action.directory, this.getDir(this.currentDir) + "/", action.method);
+    console.log(result);
+    this.onBreadcrumsNavigate({ directory: this.currentDir, dir: this.getDir(this.currentDir) });
+  }
+
 }
