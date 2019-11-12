@@ -1,52 +1,18 @@
 <mat-grid-list cols="5" rowHeight="20vh" style="width: 100%;height:100%;">
     <mat-grid-tile *ngFor="let folder of files.folders">
         <button mat-button style="width: 90%; height: 90%;" (click)="onClickFolder(folder)"
-            #menuFolderTrigger="matMenuTrigger" [matMenuTriggerFor]="contextMenuForFolder"
             (contextmenu)="onContextMenuForFolder($event,folder)">
             <mat-icon>folder</mat-icon>
-            {{folder}}
+            {{getVisibleText(folder)}}
         </button>
     </mat-grid-tile>
     <mat-grid-tile *ngFor="let file of files.files">
-        <button mat-raised-button style="width: 90%; height: 90%;" #menuFileTrigger="matMenuTrigger"
-            [matMenuTriggerFor]="contextMenuForFile" (contextmenu)="onContextMenuForFile($event,file)"
+        <button mat-raised-button style="width: 90%; height: 90%;" (contextmenu)="onContextMenuForFile($event,file)"
             (click)="onClickFile(file)">
             <img [src]="getIcon(file)" style="width: 30px;" />
             <br>
             <span style="word-wrap: break-word;">
-                {{file}}
+                {{getVisibleText(file)}}
             </span></button>
     </mat-grid-tile>
 </mat-grid-list>
-
-<mat-menu #contextMenuForFolder="matMenu">
-    <button mat-menu-item>Copy</button>
-    <button mat-menu-item>Move</button>
-    <button mat-menu-item style="color:red;">Delete</button>
-</mat-menu>
-<mat-menu #contextMenuForFile="matMenu">
-    <mat-list>
-        <mat-list-item>
-            Action on this file
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-            <button mat-menu-item>Info</button>
-        </mat-list-item>
-        <mat-list-item>
-            <button mat-menu-item>Rename</button>
-        </mat-list-item>
-        <mat-list-item>
-            <button mat-menu-item>Copy</button>
-        </mat-list-item>
-        <mat-list-item>
-            <button mat-menu-item>Move</button>
-        </mat-list-item>
-        <mat-list-item>
-            <button mat-menu-item>Share</button>
-        </mat-list-item>
-        <mat-list-item>
-            <button mat-menu-item style="color: red;">Delete</button>
-        </mat-list-item>
-    </mat-list>
-</mat-menu>

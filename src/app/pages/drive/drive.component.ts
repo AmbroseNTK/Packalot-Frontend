@@ -7,6 +7,7 @@ import { UploaderService } from 'src/app/services/uploader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewFolderDialogComponent } from 'src/app/components/new-folder-dialog/new-folder-dialog.component';
 import { UploadDialogComponent } from 'src/app/components/upload-dialog/upload-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-drive',
@@ -15,7 +16,7 @@ import { UploadDialogComponent } from 'src/app/components/upload-dialog/upload-d
 })
 export class DriveComponent implements OnInit {
 
-  constructor(public auth: AuthService, public afAuth: AngularFireAuth, public drive: DriveService, public uploader: UploaderService, public dialog: MatDialog) { }
+  constructor(public auth: AuthService, public afAuth: AngularFireAuth, public drive: DriveService, public uploader: UploaderService, public dialog: MatDialog, public snack: MatSnackBar) { }
 
   files = { files: [], folders: [] };
   currentDir = [];
@@ -154,8 +155,15 @@ export class DriveComponent implements OnInit {
     console.log(action);
     let result = await this.drive.copyOrMove(this.afAuth.auth.currentUser.uid, await this.afAuth.auth.currentUser.getIdToken(),
       action.directory, this.getDir(this.currentDir) + "/", action.method);
-    console.log(result);
+    if (result.status == "failed") {
+      this.snack.open(result["failedMessage"], "close", { duration: 1000 });
+    }
     this.onBreadcrumsNavigate({ directory: this.currentDir, dir: this.getDir(this.currentDir) });
+    this.onClearAction(action);
+  }
+
+  onClearAction(action) {
+    this.drive.removeFromClipboard(action.directory);
   }
 
 }

@@ -18,10 +18,10 @@ export class BreadcrumsComponent implements OnInit {
   ngOnInit() {
   }
 
-  goTo(dirName) {
-    while (this.directory.length != 0 && this.directory.pop() != dirName) { }
-    if (dirName != "") {
-      this.directory.push(dirName);
+  goTo(dirName, index) {
+
+    while (this.directory.length != 0 && index != this.directory.length - 1) {
+      this.directory.pop();
     }
     let dir = "";
     for (let i = 0; i < this.directory.length; i++) {

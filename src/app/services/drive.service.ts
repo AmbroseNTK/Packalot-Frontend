@@ -86,4 +86,12 @@ export class DriveService {
     }
   }
 
+  public removeFromClipboard(directory) {
+    console.log(this.clipboard);
+    let index = this.clipboard.findIndex((file) => file.directory == directory);
+    if (index != -1) {
+      this.clipboard = this.clipboard.splice(index, 1);
+    }
+  }
+
 }

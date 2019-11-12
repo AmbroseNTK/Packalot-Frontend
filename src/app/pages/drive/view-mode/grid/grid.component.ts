@@ -29,12 +29,6 @@ export class GridComponent implements OnInit {
   ngOnInit() {
   }
 
-  @ViewChild("menuFolderTrigger", { static: false })
-  contextMenuForFolder: MatMenuTrigger;
-
-  @ViewChild("menuFileTrigger", { static: false })
-  contextMenuForFile: MatMenuTrigger;
-
   async onContextMenuForFolder(event: MouseEvent, folder) {
     event.preventDefault();
     //this.contextMenuForFolder.menuData = { folder: folder };
@@ -82,7 +76,6 @@ export class GridComponent implements OnInit {
   }
 
   onClickFile(file) {
-    this.contextMenuForFile.closeMenu();
 
   }
 
@@ -113,6 +106,17 @@ export class GridComponent implements OnInit {
       default:
         return "https://image.flaticon.com/icons/svg/148/148964.svg";
     }
+  }
+
+  getMaxVisibleChar() {
+    return Math.floor(window.innerWidth * 15 / 900);
+  }
+
+  getVisibleText(text) {
+    if (text.length > this.getMaxVisibleChar()) {
+      text = text.substring(0, this.getMaxVisibleChar() - 3) + "...";
+    }
+    return text;
   }
 
 }
