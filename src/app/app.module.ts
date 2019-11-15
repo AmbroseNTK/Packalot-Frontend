@@ -26,6 +26,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FileActionDialogComponent } from './components/file-action-dialog/file-action-dialog.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
+import { ShareFileDialogComponent } from './components/share-file-dialog/share-file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { MatListModule } from '@angular/material/list';
     LoginDialogComponent,
     NewFolderDialogComponent,
     UploadDialogComponent,
-    FileActionDialogComponent
+    FileActionDialogComponent,
+    ShareFileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +61,6 @@ import { MatListModule } from '@angular/material/list';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [SimpleComponent, LoginDialogComponent, NewFolderDialogComponent, UploadDialogComponent, FileActionDialogComponent]
+  entryComponents: [SimpleComponent, LoginDialogComponent, NewFolderDialogComponent, UploadDialogComponent, FileActionDialogComponent, ShareFileDialogComponent]
 })
 export class AppModule { }

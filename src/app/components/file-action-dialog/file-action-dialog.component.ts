@@ -32,6 +32,11 @@ export class FileActionDialogComponent implements OnInit {
       }
     },
     {
+      icon:"", text:"Share",handler:()=>{
+        
+      }
+    },
+    {
       icon: "https://image.flaticon.com/icons/svg/1632/1632602.svg", text: "Delete", handler: async () => {
         let result = await this.drive.deleteDir(this.data.uid, this.data.token, this.data.location);
         this._bottomSheetRef.dismiss();

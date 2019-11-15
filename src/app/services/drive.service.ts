@@ -94,4 +94,15 @@ export class DriveService {
     }
   }
 
+  public async share(uid, token, fileName, shareable, shortenUrl){
+      let result = await this.client.post(this.api.root+"file/share",{
+        uid:uid,
+        token:token,
+        fileName:fileName,
+        shareable:shareable,
+        shortenUrl:shortenUrl
+      });
+      
+  }
+
 }
